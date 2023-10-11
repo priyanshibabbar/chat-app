@@ -4,6 +4,7 @@ import { FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, u
 import { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+// import {useNavigate} from "react-router-dom";
 
 const Login = () => {
 
@@ -13,7 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
-
+  // const navigate = useNavigate();
   const handleClick = () => setShow(!show);
 
   const submitHandler = async() => {
@@ -36,29 +37,24 @@ const Login = () => {
           'Content-Type': `application/json`,
         },
       };
-
       const {data} = await axios.post(
-        "/api/user/login",
+          "http://localhost:4000/api/user/login",
         { email, password },
         config
       );
 
-      toast({
-        title: "Please Fill all the fields",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      console.log("this is data-->" ,data)
 
       localStorage.setItem("userInfo", JSON.stringify(data))
       setLoading(false);
-      history.pushState('/chats')
+
+      // history.pushState('/chats')
+      
       
     } catch (error) {
       toast({
         title: "Error Occured",
-        description: error.response.data.message,
+        description: error.response.data?.message,
         status: "error",
         duration: 5000,
         isClosable: true,

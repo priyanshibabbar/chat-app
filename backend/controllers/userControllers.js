@@ -144,22 +144,52 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-
+    console.log(req.body);
+    console.log("authroute here");
     const user = await User.findOne({ email });
 
-    if (user && (await user.matchPassword(password))) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            pic: user.pic,
-            token: generateToken(user._id),
+    try {
+
+
+
+        if (user && (await user.matchPassword(password))) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                pic: user.pic,
+                token: generateToken(user._id),
+            })
+        }
+        else {
+            res.status(400);
+            throw new Error("Invalid Email or Password");
+        }
+        
+    } catch (error) {
+        console.log("Error while login --> " , error);
+        res.status(400).send({
+            message: "error in login",
+            error: error.message
         })
     }
-    else {
-        res.status(400);
-        throw new Error("Invalid Email or Password");
-    }
+
+
+
+
+    // if (user && (await user.matchPassword(password))) {
+    //     res.json({
+    //         _id: user._id,
+    //         name: user.name,
+    //         email: user.email,
+    //         pic: user.pic,
+    //         token: generateToken(user._id),
+    //     })
+    // }
+    // else {
+    //     res.status(400);
+    //     throw new Error("Invalid Email or Password");
+    // }
 });
 
 
