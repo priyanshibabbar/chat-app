@@ -17,9 +17,56 @@ const Login = () => {
   // const navigate = useNavigate();
   const handleClick = () => setShow(!show);
 
-  const submitHandler = async() => {
+  // const submitHandler = async() => {
+  //   setLoading(true);
+  //   if(!email || !password) {
+  //     toast({
+  //       title: "Please Fill all the fields",
+  //       status: "warning",
+  //       duration: 5000,
+  //       isClosable: true,
+  //       position: "bottom",
+  //     });
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const config = {
+  //       headers : {
+  //         'Content-Type': `application/json`,
+  //       },
+  //     };
+  //     const {data} = await axios.post(
+  //         "http://localhost:4000/api/user/login",
+  //       { email, password },
+  //       config
+  //     );
+
+  //     console.log("this is data-->" ,data)
+
+  //     localStorage.setItem("userInfo", JSON.stringify(data))
+  //     setLoading(false);
+
+  //     history.pushState('/chats')
+      
+      
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error Occured",
+  //       description: error.response.data?.message,
+  //       status: "error",
+  //       duration: 5000,
+  //       isClosable: true,
+  //       position: "bottom",
+  //     });
+
+  //     setLoading(false);
+  //   }
+  // }
+  const submitHandler = async () => {
     setLoading(true);
-    if(!email || !password) {
+    if (!email || !password) {
       toast({
         title: "Please Fill all the fields",
         status: "warning",
@@ -30,41 +77,51 @@ const Login = () => {
       setLoading(false);
       return;
     }
-
+  
     try {
       const config = {
-        headers : {
-          'Content-Type': `application/json`,
+        headers: {
+          'Content-Type': 'application/json',
         },
       };
-      const {data} = await axios.post(
-          "http://localhost:4000/api/user/login",
+      const response = await axios.post(
+        "http://localhost:4000/api/user/login",
         { email, password },
         config
       );
 
-      console.log("this is data-->" ,data)
-
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      setLoading(false);
-
-      // history.pushState('/chats')
-      
-      
+      console.log("this is res -->" , response);
+  
+      if (response && response.data) {
+        const { data } = response;
+        console.log("this is data-->", data);
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        setLoading(false);
+        history.push('/chats'); // Use `history.push` directly, not `history.pushState`
+      } else {
+        // Handle the case where `data` is undefined or doesn't exist in the response.
+        toast({
+          title: "Error Occurred",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+      }
     } catch (error) {
       toast({
-        title: "Error Occured",
-        description: error.response.data?.message,
+        title: "Error Occurred",
+        description: error.response?.data.message || "An error occurred",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
-
       setLoading(false);
     }
-  }
-
+  };
+  
   return (
     <VStack spacing={"5px"}>
       <FormControl id='email' isRequired>
