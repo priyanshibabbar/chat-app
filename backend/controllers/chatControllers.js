@@ -175,6 +175,27 @@ const removeFromGroup = asyncHandler(async (req, res) => {
   }
 });
 
+
+const allUser =async(req , res) =>{
+
+  try {
+
+
+    
+  } catch (error) {
+    console.log("Error While searching users" , user)
+  }
+
+
+
+}
+
+
+
+
+
+
+
 module.exports = {
   accessChat,
   fetchChats,
@@ -183,3 +204,8 @@ module.exports = {
   addToGroup,
   removeFromGroup
 };
+
+
+
+
+
