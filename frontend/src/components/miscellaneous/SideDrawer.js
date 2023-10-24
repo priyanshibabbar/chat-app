@@ -119,7 +119,7 @@ const SideDrawer = () => {
         justifyContent="space-between"
         alignItems="center"
         bg="white"
-        w="100%"
+        width="100%"
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
