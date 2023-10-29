@@ -45,7 +45,7 @@ const GroupChatModal = ({ children }) => {
         `http://localhost:4000/api/user/signup?search=${search}`,
         config
       );
-      console.log(data);
+      // console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
