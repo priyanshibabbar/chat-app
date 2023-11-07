@@ -24,6 +24,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
   const toast = useToast();
 
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
+
+    // Typing Indicator Logic
+  };
+
+
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -38,12 +45,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       
 
+      // const { data } = await axios.get(
+      //   `http://localhost:4000/api/message/${selectedChat._id}`,
+      //   config
+      // ); 
+      console.log("selected user ",selectedChat)
       const { data } = await axios.get(
-        `http://localhost:4000/api/message/${selectedChat._id}`,
+        `http://localhost:4000/api/message/${selectedChat?.users[0]?._id}/${user?._id}`,
         config
       );
 
-      console.log("hehe",messages);
+      console.log(" fetching messages here --> ",data);
 
       setMessages(data);
       setLoading(false);
@@ -59,14 +71,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const typingHandler = (e) => {
-    setNewMessage(e.target.value);
-
-    // Typing Indicator Logic
-  };
-
+  
   useEffect(() => {
     fetchMessages();
+    
   }, [selectedChat]);
 
   const sendMessage = async (event) => {
@@ -79,11 +87,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         setNewMessage("");
+        console.log("selected chat ",selectedChat)
         const { data } = await axios.post(
           "http://localhost:4000/api/message",
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat?.users[0]?._id,
+            
           },
           config
         );
